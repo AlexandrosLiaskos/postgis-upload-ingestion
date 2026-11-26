@@ -1,0 +1,56 @@
+name: Checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    name: Ruff
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install ruff==0.17.5
+      - run: ruff check .
+      - run: ruff format --check .
+
+  tests:
+    name: Tests with GDAL ${{ matrix.gdal }} and PostGIS ${{ matrix.postgis }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - gdal: "3.13.3"
+            postgis: "17-3.5"
+          - gdal: "3.10.3"
+            postgis: "16-3.4"
+    # The GDAL image holds GDAL, its Python bindings and ogr2ogr, as a server that runs this library would.
+    container: ghcr.io/osgeo/gdal:ubuntu-small-${{ matrix.gdal }}
+    services:
+      postgis:
+        image: postgis/postgis:${{ matrix.postgis }}
+        env:
+          POSTGRES_PASSWORD: tests
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 20
+    env:
+      PGHOST: postgis
+      PGPORT: "5432"
+      PGDATABASE: postgres
+      PGUSER: postgres
+      PGPASSWORD: tests
+    steps:
+      - uses: actions/checkout@v4
+      - run: apt-get update -qq && apt-get install -y -qq --no-install-recommends python3-venv
+      - run: python3 -m venv --system-site-packages /venv && /venv/bin/pip install -q -e ".[test]"
+      - run: /venv/bin/pytest -v

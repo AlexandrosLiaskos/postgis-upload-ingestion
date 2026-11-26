@@ -1,0 +1,47 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "postgis-upload-ingestion"
+version = "0.1.0"
+description = "Secure ingestion of geospatial uploads into PostGIS: reads CSV, Excel, GeoJSON, GeoPackage, KML, FlatGeobuf and shapefiles (also in ZIP archives) into a table with GDAL, safely, and profiles their columns."
+readme = "README.md"
+license = "AGPL-3.0-only"
+license-files = ["LICENSE"]
+authors = [{ name = "Alexandros Liaskos" }]
+requires-python = ">=3.10"
+# GDAL (its Python bindings and the ogr2ogr program) is required but not declared: its bindings must match the
+# installed GDAL library, which pip cannot ensure. Use a system or conda installation of GDAL 3.6 or later.
+dependencies = []
+keywords = ["PostGIS", "GDAL", "ogr2ogr", "upload", "ingestion", "GIS", "data profiling"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Science/Research",
+  "Intended Audience :: Developers",
+  "Operating System :: POSIX",
+  "Programming Language :: Python :: 3",
+  "Topic :: Scientific/Engineering :: GIS",
+  "Topic :: Database",
+  "Typing :: Typed",
+]
+
+[project.urls]
+Homepage = "https://github.com/AlexandrosLiaskos/postgis-upload-ingestion"
+Issues = "https://github.com/AlexandrosLiaskos/postgis-upload-ingestion/issues"
+
+[project.optional-dependencies]
+test = ["pytest>=8", "psycopg[binary]>=3.1"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/postgis_upload_ingestion"]
+
+[tool.ruff]
+line-length = 140
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
