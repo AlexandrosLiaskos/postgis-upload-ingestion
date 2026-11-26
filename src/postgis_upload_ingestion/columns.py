@@ -50,18 +50,20 @@ def plain_name(original: str) -> str:
     return safe[:55]
 
 
-def tidy_names(cursor: Any, schema: str, table: str, reserved: frozenset[str]) -> dict[str, str]:
+def tidy_names(cursor: Any, schema: str, table: str, reserved: frozenset[str], claimed: frozenset[str] = frozenset()) -> dict[str, str]:
     """Gives every column a plain name and returns the original header of each renamed column, by its new name.
 
     The names that are already plain are kept, and the new names are chosen so that none of them is taken: a column
     "Height m" becomes "height_m_2" when another column is already called "height_m". `reserved` are the columns made by
-    GDAL (fid, geom), which keep their names; their names are not given to other columns.
+    GDAL (fid, geom), which keep their names. `claimed` are names needed later (the geometry of a table, "geom"): a
+    column of the file with such a name is renamed. Neither kind of name is given to another column.
     """
     columns = [name for name, _ in columns_of(cursor, schema, table)]
-    used = set(reserved) | {name for name in columns if name not in reserved and plain_name(name) == name}
+    keeps = {name for name in columns if name not in reserved and name not in claimed and plain_name(name) == name}
+    used = set(reserved) | set(claimed) | keeps
     labels: dict[str, str] = {}
     for original in columns:
-        if original in reserved or (plain_name(original) == original):
+        if original in reserved or original in keeps:
             continue
         base = plain_name(original)
         safe, number = base, 2

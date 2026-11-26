@@ -1,0 +1,14 @@
+{
+  "title": "Secure Ingestion of Geospatial Uploads into PostGIS",
+  "upload_type": "software",
+  "description": "<p>A Python library that reads files uploaded by people (CSV, Excel, GeoJSON, GeoPackage, KML, FlatGeobuf, shapefiles, also in ZIP archives) into a PostGIS table with GDAL. It guards against files that read other files of the server, fetch addresses or break SQL, reads values and coordinate systems with care, and returns the counts, geometry, extent and a profile of every column, with problems worded for the person who uploaded the file.</p>",
+  "creators": [
+    {
+      "name": "Liaskos, Alexandros",
+      "affiliation": "National and Kapodistrian University of Athens",
+      "orcid": "0009-0003-0568-945X"
+    }
+  ],
+  "license": "AGPL-3.0-only",
+  "keywords": ["PostGIS", "GDAL", "data ingestion", "web GIS", "security"]
+}

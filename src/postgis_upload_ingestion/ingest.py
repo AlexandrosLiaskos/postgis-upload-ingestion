@@ -188,7 +188,7 @@ def ingest(
         _run([*common, "-lco", "GEOMETRY_NAME=geom", "-t_srs", "EPSG:4326", "-nlt", "PROMOTE_TO_MULTI", "-dim", "XY"], env, limits)
         reserved = frozenset({"fid", "geom"})
     with connection.cursor() as cursor:
-        labels = cols.tidy_names(cursor, schema, table, reserved)
+        labels = cols.tidy_names(cursor, schema, table, reserved, claimed=frozenset({"geom"}) if is_table else frozenset())
         notes += cols.set_types(cursor, schema, table, reserved | {"geom"})
         if is_table:
             notes += _points_from_columns(cursor, schema, table, coordinate_systems)

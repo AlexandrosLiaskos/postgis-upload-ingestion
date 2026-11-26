@@ -170,19 +170,10 @@ def test_a_file_is_opened_only_as_the_kind_its_name_says(read, tmp_path):
     assert "SECRET" not in problem.message
 
 
-def test_a_layer_whose_name_is_an_option_is_refused(read, tmp_path):
-    from osgeo import ogr, osr
-
-    path = tmp_path / "layers.gpkg"
-    source = ogr.GetDriverByName("GPKG").CreateDataSource(str(path))
-    reference = osr.SpatialReference()
-    reference.ImportFromEPSG(4326)
-    layer = source.CreateLayer("-sql", reference, ogr.wkbPoint)
-    feature = ogr.Feature(layer.GetLayerDefn())
-    feature.SetGeometry(ogr.CreateGeometryFromWkt("POINT (23.7 37.9)"))
-    layer.CreateFeature(feature)
-    source = None
-    problem = read("layers.gpkg", path.read_bytes(), fails=True)
+def test_a_layer_whose_name_is_an_option_is_refused(read):
+    # The layer of a GeoJSON file takes the "name" of its collection; ogr2ogr would read "-sql" as one of its options.
+    content = json.dumps({"type": "FeatureCollection", "name": "-sql", "features": [point_feature({"n": 1})]})
+    problem = read("layers.geojson", content, fails=True)
     assert problem.code == "layer_name"
 
 
