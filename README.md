@@ -117,8 +117,9 @@ nested properties and thousands separators.
 Liaskos, A. (2026). _Secure Ingestion of Geospatial Uploads into PostGIS_ (Version 0.1.0) [Computer software]. Zenodo.
 https://doi.org/10.5281/zenodo.24553469
 
-The citation is also given in [CITATION.cff](CITATION.cff), which GitHub offers under "Cite this repository". Each
-release is archived on Zenodo with its own DOI.
+To cite every version at once, use the concept DOI [10.5281/zenodo.24553468](https://doi.org/10.5281/zenodo.24553468),
+which always resolves to the latest release. The citation is also given in [CITATION.cff](CITATION.cff), which GitHub
+offers under "Cite this repository". Each release is archived on Zenodo with its own DOI.
 
 ## Licence
 
