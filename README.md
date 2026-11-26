@@ -1,5 +1,10 @@
 # Secure Ingestion of Geospatial Uploads into PostGIS
 
+[![Checks](https://github.com/AlexandrosLiaskos/postgis-upload-ingestion/actions/workflows/ci.yml/badge.svg)](https://github.com/AlexandrosLiaskos/postgis-upload-ingestion/actions/workflows/ci.yml)
+[![PyPI](https://img.shields.io/pypi/v/postgis-upload-ingestion.svg)](https://pypi.org/project/postgis-upload-ingestion/)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24553469.svg)](https://doi.org/10.5281/zenodo.24553469)
+[![Licence: AGPL-3.0](https://img.shields.io/badge/licence-AGPL--3.0-blue.svg)](LICENSE)
+
 A web application that lets people upload their own data has to read files it did not write: tables with coordinate
 columns, GeoJSON, GeoPackage, KML, FlatGeobuf, shapefiles, often inside a ZIP archive, with column names and values
 of every kind. GDAL reads all of them, but it was not made for files from strangers. A file can name another file of
@@ -109,8 +114,11 @@ nested properties and thousands separators.
 
 ## Citation
 
-The citation of the software is given in [CITATION.cff](CITATION.cff). Each release is archived on Zenodo with its own
-DOI.
+Liaskos, A. (2026). _Secure Ingestion of Geospatial Uploads into PostGIS_ (Version 0.1.0) [Computer software]. Zenodo.
+https://doi.org/10.5281/zenodo.24553469
+
+The citation is also given in [CITATION.cff](CITATION.cff), which GitHub offers under "Cite this repository". Each
+release is archived on Zenodo with its own DOI.
 
 ## Licence
 
